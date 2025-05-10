@@ -1,1 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <title>Maryam</title>
+  <style>
+    body {
+      margin-top: 50px;  
+      text-align: center;
+      background-color: rgb(173, 86, 86);
+     
+    }
+    div
+    {
+        margin-top: 50px;
+    }
+    img {
+      width: 200px;
+      height: 200px;
+      transition: transform 0.3s ease;
+      margin: 5px;
+    }
+
+    .big{
+        width: 50%;
+        height: 50%;
+    }
+    .biger img:hover {
+      transform: scale(1.5);
+    }
+
+    .image-container {
+      display: none;
+      margin-top: 10px;
+    }
+
+
+    #movingPerson {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+    }
+
+    .freelancer-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .money {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 200px;
+      height: 100px;
+      opacity: 0;
+      transform: translateX(-50%) translateY(0);
+      transition: all 1s ease-in-out;
+    }
+
+    .money.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-60px);
+    }
+    input[type="button"] {
+  border-radius: 20px; 
+  border: none;
+  background-color: #b6962f;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  margin: 10px;
+}
+
+input[type="button"]:hover {
+  background-color: #519c9e;
+}
+#chinaImages {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.china-image {
+  width: 80px;
+  height: auto;
+  transition: transform 0.3s ease, opacity 0.5s;
+  opacity: 0;
+}
+
+.china-image.show {
+  opacity: 1;
+}
+.center-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
+.center-section input[type="button"] {
+  margin-bottom: 20px;
+}
+
+.center-section img {
+  max-width: 90%;
+  height: auto;
+  max-height: 500px;
+  object-fit: contain;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <div class="center-section">
+    <input type="button" value="My Country" onclick="toggleImages('countryImgs')">
+    <div id="countryImgs" class="image-container biger">
+      <img src="BahrainMap.jpg">
+    </div>
+  </div>
+
+  <div class="center-section">
+    <input type="button" value="My University" onclick="toggleImages('universityImgs')">
+    <div id="universityImgs" class="image-container biger">
+      <img src="Bahrain-University.jpg" class="big">
+    </div>
+  </div>
+
+  <div class="center-section">
+    <input type="button" value="My Major" onclick="toggleImages('majorImgs')">
+    <div id="majorImgs" class="image-container biger">
+      <img src="codes.jpg">
+      <img src="codes2.jpg">
+      <img src="codes3.jpg">
+    </div>
+  </div>
+
+  <div class="center-section">
+    <input type="button" value="My draw" onclick="toggleImages('drawImgs')">
+    <div id="drawImgs" class="image-container biger">
+      <img src="dongman.jpg">
+      <img src="dongman2.jpg">
+      <img src="dongman3.jpg">
+      <img src="dongman4.jpg">
+    </div>
+  </div>
+
+  <div style="position: relative;" class="center-section">
+    <input type="button" value="My Dream" onclick="toggleDream()">
+    <div id="dreamImgs" class="image-container" style="position: relative; height: 250px;">
+      <img src="travel.jpg" style="width: 500px;">
+      <img id="movingPerson" src="person.png" style="display: none;">
+      <span id="chinaImages" ></span>
+    </div>
+  </div>
+
+  <div class="center-section">
+    <input type="button" value="How I think I will make money" onclick="toggleMoney()">
+    <div id="moneyImgs" class="image-container">
+      <div class="freelancer-container">
+        <img src="freelancer.jpg" class="big">
+        <img id="moneyImg" class="money" src="china-yuan.png">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let personInterval;
+
+    function toggleImages(id) {
+  const div = document.getElementById(id);
+  div.style.display = (div.style.display === 'none' || div.style.display === '') ? 'block' : 'none';
+  div.parentElement.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+
+function toggleDream() {
+  const container = document.getElementById("dreamImgs");
+  const person = document.getElementById("movingPerson");
+  const chinaContainer = document.getElementById("chinaImages");
+
+  if (container.style.display === "none" || container.style.display === "") {
+    container.style.display = "block";
+    person.style.display = "block";
+    showChinaImages(() => {
+      movePersonRandomly();
+    });
+  } else {
+    container.style.display = "none";
+    person.style.display = "none";
+    chinaContainer.innerHTML = "";
+    clearInterval(personInterval);
+  }
+
+  container.parentElement.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+
+    function showChinaImages(callback) {
+  const chinaContainer = document.getElementById("chinaImages");
+  const images = ["china.jpg", "Chinese-food.jpg", "Huang-he.jpg"];
+  chinaContainer.innerHTML = "";
+  let index = 0;
+
+  const person = document.getElementById("movingPerson");
+  person.style.display = "none";
+  clearInterval(personInterval);
+
+  const interval = setInterval(() => {
+    if (index < images.length) {
+      const img = document.createElement("img");
+      img.src = images[index];
+      img.className = "china-image show";
+      img.onmouseover = () => img.style.transform = "scale(1.5)";
+      img.onmouseout = () => img.style.transform = "scale(1)";
+      chinaContainer.appendChild(img);
+      index++;
+    } else {
+      clearInterval(interval);
+      setTimeout(() => {
+        chinaContainer.innerHTML = "";
+        person.style.display = "block";
+        callback();
+      }, 5000);
+    }
+  }, 800);
+}
+
+
+
+function movePersonRandomly() {
+  const person = document.getElementById("movingPerson");
+  const travelImg = document.querySelector("#dreamImgs img"); // صورة السفر
+
+  const move = () => {
+    const maxX = travelImg.clientWidth - person.clientWidth;
+    const maxY = travelImg.clientHeight - person.clientHeight;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    // نخلي الصورة relative حتى يتحرك الشخص داخلها
+    travelImg.style.position = "relative";
+    person.style.position = "absolute";
+    person.style.left = x + "px";
+    person.style.top = y + "px";
+  };
+
+  personInterval = setInterval(move, 1000);
+}
+
+
+function toggleMoney() {
+  const container = document.getElementById("moneyImgs");
+  const money = document.getElementById("moneyImg");
+
+  if (container.style.display === "none" || container.style.display === "") {
+    container.style.display = "block";
+    setTimeout(() => {
+      money.classList.add("show");
+    }, 300);
+  } else {
+    container.style.display = "none";
+    money.classList.remove("show");
+  }
+
+  container.parentElement.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+
+
+  </script>
+</body>
+</html>
 
